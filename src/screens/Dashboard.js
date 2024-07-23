@@ -1,112 +1,71 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { COLORS } from "../themes/colors";
 import { FollowingDays } from "../../components/FollowingDays";
-
-const FOLLOWING_DAYS = [
-  { id: "112qsdsads", name: "Dzisiaj", value: 22, type: "sun" },
-  {
-    id: "232323dsads",
-    name: "Wtorek",
-    value: 22,
-    type: "sun",
-  },
-  {
-    id: "112qfffsads",
-    name: "Środa",
-    value: 22,
-    type: "sun",
-  },
-  //   {
-  //     id: "112adsada111sads",
-  //     name: "Czwartek",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112q",
-  //     name: "Pątek",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "12222222qsdsads",
-  //     name: "Sobota",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112qnnnnnnnnnnads",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112qnnnnnnnads",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112qnnnnnnnnnnas",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112qnnnnnnnnnnad",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "12qnnnnnnnnnnads",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112nnnnnnnnnads",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "11llllnnnnnnnnads",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-  //   {
-  //     id: "112qnnnnnnbbads",
-  //     name: "Niedziela",
-  //     value: 22,
-  //     type: "sun",
-  //   },
-];
+import { useEffect, useState } from "react";
+import { fetchCityData, fetchFollowingDays } from "../services/api";
+import { Footer } from "../../components/Footer";
 
 export const Dashboard = () => {
+  const [current, setCurrent] = useState(null);
+  const [followingDays, setFollowingDays] = useState(null);
+
+  const init = async () => {
+    const response = await fetchCityData();
+    setCurrent(response);
+
+    const followingDaysRespons = await fetchFollowingDays();
+    setFollowingDays(followingDaysRespons);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  if (!current || !followingDays)
+    return (
+      <ActivityIndicator
+        color={COLORS.sun}
+        size="large"
+        style={{ height: "100%" }}
+      />
+    );
+
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.cityName}>Warszawa</Text>
-        <Text style={styles.temperature}>22°</Text>
+        <Text style={styles.cityName}>{current.location.name}</Text>
+        <Text style={styles.temperature}>{current.current.temp_c}°</Text>
 
         <View style={styles.weatherContainer}>
-          <Ionicons name="sunny-outline" size={100} color={COLORS.sun} />
-          <Text style={styles.weather}>Słonecznie</Text>
+          <Image
+            source={{
+              uri: `https:${current.current.condition.icon}`,
+            }}
+            resizeMode="contain"
+            width={150}
+            height={150}
+          />
+          <Text style={styles.weather}>{current.current.condition.text}</Text>
         </View>
 
         <View style={styles.followingDaysContainer}>
-          {FOLLOWING_DAYS.map((item, index) => (
+          {followingDays.forecast.forecastday.map((day, index, allDays) => (
             <FollowingDays
-              day={item}
-              key={item.id}
-              isLast={index === FOLLOWING_DAYS.length - 1}
+              day={day}
+              key={day.date}
+              isLast={index === allDays.length - 1}
             />
           ))}
         </View>
       </View>
+      <Footer />
     </ScrollView>
   );
 };
@@ -117,7 +76,6 @@ const styles = StyleSheet.create({
   },
   weatherContainer: {
     alignItems: "center",
-    marginTop: 10,
   },
   cityName: {
     fontSize: 30,
