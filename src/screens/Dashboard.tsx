@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { fetchCityData, fetchFollowingDays } from "../services/api";
 import { Footer } from "../../components/Footer";
 import { CityData, FollowingDaysType } from "../types/api";
+import { ListContainer } from "@/components/ListContainer";
 
 export const Dashboard = () => {
   const [current, setCurrent] = useState<null | CityData>(null);
@@ -58,7 +59,7 @@ export const Dashboard = () => {
           <Text style={styles.weather}>{current.current.condition.text}</Text>
         </View>
 
-        <View style={styles.followingDaysContainer}>
+        <ListContainer>
           {followingDays.forecast.forecastday.map((day, index, allDays) => (
             <FollowingDays
               day={day}
@@ -66,7 +67,7 @@ export const Dashboard = () => {
               isLast={index === allDays.length - 1}
             />
           ))}
-        </View>
+        </ListContainer>
       </View>
       <Footer />
     </ScrollView>
