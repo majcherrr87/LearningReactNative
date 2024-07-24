@@ -14,7 +14,7 @@ import { Footer } from "../../components/Footer";
 import { CityData, FollowingDaysType } from "../types/api";
 import { ListContainer } from "@/components/ListContainer";
 
-export const Dashboard = () => {
+export const LocationDetails = () => {
   const [current, setCurrent] = useState<null | CityData>(null);
   const [followingDays, setFollowingDays] = useState<null | FollowingDaysType>(
     null
