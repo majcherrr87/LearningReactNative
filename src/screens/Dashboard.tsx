@@ -11,10 +11,13 @@ import { FollowingDays } from "../../components/FollowingDays";
 import { useEffect, useState } from "react";
 import { fetchCityData, fetchFollowingDays } from "../services/api";
 import { Footer } from "../../components/Footer";
+import { CityData, FollowingDaysType } from "../types/api";
 
 export const Dashboard = () => {
-  const [current, setCurrent] = useState(null);
-  const [followingDays, setFollowingDays] = useState(null);
+  const [current, setCurrent] = useState<null | CityData>(null);
+  const [followingDays, setFollowingDays] = useState<null | FollowingDaysType>(
+    null
+  );
 
   const init = async () => {
     const response = await fetchCityData();

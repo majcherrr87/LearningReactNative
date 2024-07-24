@@ -5,11 +5,17 @@ import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 import "dayjs/locale/pl";
 import isToday from "dayjs/plugin/isToday";
+import { ForecastDay } from "@/src/types/api";
 
 dayjs.extend(isToday);
 dayjs.locale("pl");
 
-export const FollowingDays = ({ day, isLast }) => {
+type FollowingDaysProps = {
+  day: ForecastDay;
+  isLast: boolean;
+};
+
+export const FollowingDays = ({ day, isLast }: FollowingDaysProps) => {
   const date = dayjs(day.date).isToday()
     ? "Dzisiaj"
     : dayjs(day.date).format("dddd");
