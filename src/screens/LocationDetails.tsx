@@ -11,16 +11,16 @@ import { FollowingDays } from "../../components/FollowingDays";
 import { useEffect, useState } from "react";
 import { fetchCityData, fetchFollowingDays } from "../services/api";
 import { Footer } from "../../components/Footer";
-import { CityData, FollowingDaysType } from "../types/api";
+import { ApiError, CityData, FollowingDaysType } from "../types/api";
 import { ListContainer } from "@/components/ListContainer";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStockParamList } from "../navigation/Root";
 
 export const LocationDetails = () => {
-  const [current, setCurrent] = useState<null | CityData>(null);
-  const [followingDays, setFollowingDays] = useState<null | FollowingDaysType>(
-    null
-  );
+  const [current, setCurrent] = useState<null | CityData | ApiError>(null);
+  const [followingDays, setFollowingDays] = useState<
+    null | FollowingDaysType | ApiError
+  >(null);
   const {
     params: { location },
   } = useRoute<RouteProp<RootStockParamList, "LocationDetails">>();
@@ -36,8 +36,14 @@ export const LocationDetails = () => {
   useEffect(() => {
     init();
   }, []);
+  console.log(current);
 
-  if (!current || !followingDays)
+  if (
+    !current ||
+    !followingDays ||
+    "error" in current ||
+    "error" in followingDays
+  ) {
     return (
       <ActivityIndicator
         color={COLORS.sun}
@@ -45,6 +51,7 @@ export const LocationDetails = () => {
         style={{ height: "100%" }}
       />
     );
+  }
 
   return (
     <ScrollView>
@@ -111,4 +118,3 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-//40:28

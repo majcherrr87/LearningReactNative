@@ -135,3 +135,10 @@ export interface FollowingDaysType {
     forecastday: ForecastDay[];
   };
 }
+
+export interface ApiError {
+  error: {
+    code: number;
+    message: string;
+  };
+}
