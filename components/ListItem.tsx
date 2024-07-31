@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { COLORS } from "@/src/themes/colors";
 import { Condition } from "@/src/types/api";
@@ -8,6 +8,7 @@ interface ListItemProps {
   title: string;
   value: string | number;
   condition: Condition;
+  onPress?: () => void;
 }
 
 export const ListItem = ({
@@ -15,20 +16,30 @@ export const ListItem = ({
   title,
   value,
   condition,
+  onPress,
 }: ListItemProps) => {
   return (
-    <View style={[styles.container, !isLast && styles.separator]}>
-      <Text style={styles.content}>{title}</Text>
-      <Text style={[styles.content, styles.value]}>{value}</Text>
-      <Image
-        source={{
-          uri: `https:${condition.icon}`,
-        }}
-        resizeMode="contain"
-        width={40}
-        height={40}
-      />
-    </View>
+    <>
+      <TouchableOpacity
+        disabled={!onPress}
+        style={styles.container}
+        onPress={onPress}
+      >
+        <Text style={styles.content}>{title}</Text>
+        <Text style={[styles.content, styles.value]}>{value}</Text>
+        <View style={styles.condition}>
+          <Image
+            source={{
+              uri: `https:${condition.icon}`,
+            }}
+            resizeMode="contain"
+            width={40}
+            height={40}
+          />
+        </View>
+      </TouchableOpacity>
+      <View style={!isLast && styles.separator} />
+    </>
   );
 };
 
@@ -51,5 +62,9 @@ const styles = StyleSheet.create({
   value: {
     textAlign: "center",
     fontWeight: "600",
+  },
+  condition: {
+    flex: 1,
+    alignItems: "flex-end",
   },
 });

@@ -13,18 +13,23 @@ import { fetchCityData, fetchFollowingDays } from "../services/api";
 import { Footer } from "../../components/Footer";
 import { CityData, FollowingDaysType } from "../types/api";
 import { ListContainer } from "@/components/ListContainer";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStockParamList } from "../navigation/Root";
 
 export const LocationDetails = () => {
   const [current, setCurrent] = useState<null | CityData>(null);
   const [followingDays, setFollowingDays] = useState<null | FollowingDaysType>(
     null
   );
+  const {
+    params: { location },
+  } = useRoute<RouteProp<RootStockParamList, "LocationDetails">>();
 
   const init = async () => {
-    const response = await fetchCityData();
+    const response = await fetchCityData(location);
     setCurrent(response);
 
-    const followingDaysRespons = await fetchFollowingDays();
+    const followingDaysRespons = await fetchFollowingDays(location);
     setFollowingDays(followingDaysRespons);
   };
 
@@ -65,6 +70,7 @@ export const LocationDetails = () => {
               day={day}
               key={day.date}
               isLast={index === allDays.length - 1}
+              locationName={current.location.name}
             />
           ))}
         </ListContainer>
@@ -105,3 +111,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+//40:28

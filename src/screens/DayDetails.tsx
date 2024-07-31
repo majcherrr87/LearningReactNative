@@ -14,36 +14,13 @@ import { COLORS } from "../themes/colors";
 import dayjs from "dayjs";
 import { ListItem } from "@/components/ListItem";
 import { ListContainer } from "@/components/ListContainer";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStockParamList } from "../navigation/Root";
 
 export const DayDetails = () => {
-  const [current, setCurrent] = useState<null | CityData>(null);
-  const [followingDays, setFollowingDays] = useState<null | FollowingDaysType>(
-    null
-  );
-
-  const init = async () => {
-    const response = await fetchCityData();
-    setCurrent(response);
-
-    const followingDaysRespons = await fetchFollowingDays();
-    setFollowingDays(followingDaysRespons);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  if (!current || !followingDays)
-    return (
-      <ActivityIndicator
-        color={COLORS.sun}
-        size="large"
-        style={{ height: "100%" }}
-      />
-    );
-
-  const day = followingDays.forecast.forecastday[0];
-  const locationName = "Warszawa";
+  const {
+    params: { day, locationName },
+  } = useRoute<RouteProp<RootStockParamList, "DayDetails">>();
 
   return (
     <FlatList
@@ -78,7 +55,7 @@ export const DayDetails = () => {
             <ListItem
               key={hour.time}
               isLast={isLast}
-              title={hour.time}
+              title={dayjs(hour.time).format("HH:mm")}
               value={hour.temp_c}
               condition={hour.condition}
             />
