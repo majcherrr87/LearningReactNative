@@ -27,7 +27,13 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Pozwól $(PRODUCT_NAME) na dostęp do lokalizacji w celu okreśłenia pogody dla regiony w którym się znajdujesz."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

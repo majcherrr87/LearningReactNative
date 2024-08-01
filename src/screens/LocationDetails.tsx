@@ -36,7 +36,6 @@ export const LocationDetails = () => {
   useEffect(() => {
     init();
   }, []);
-  console.log(current);
 
   if (
     !current ||

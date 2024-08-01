@@ -10,9 +10,10 @@ import { COLORS } from "../src/themes/colors";
 
 interface SearchInputProps {
   onSearch: (value: string) => void;
+  rightElement?: React.ReactNode;
 }
 
-export const SearchInput = ({ onSearch }: SearchInputProps) => {
+export const SearchInput = ({ onSearch, rightElement }: SearchInputProps) => {
   const [value, setValue] = useState("");
 
   const onSearchPress = () => {
@@ -21,25 +22,32 @@ export const SearchInput = ({ onSearch }: SearchInputProps) => {
   };
 
   return (
-    <>
-      <TextInput
-        placeholder="Wpisz lokalizację"
-        placeholderTextColor={COLORS.text}
-        selectionColor={COLORS.text}
-        style={styles.input}
-        onChangeText={setValue}
-        value={value}
-      />
+    <View style={styles.container}>
+      <View style={{ flexDirection: "row" }}>
+        <TextInput
+          placeholder="Wpisz lokalizację"
+          placeholderTextColor={COLORS.text}
+          selectionColor={COLORS.text}
+          style={styles.input}
+          onChangeText={setValue}
+          value={value}
+        />
+        {rightElement}
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={onSearchPress}>
         <Text style={styles.buttonText}>Dodaj</Text>
       </TouchableOpacity>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   input: {
-    width: "100%",
+    flex: 1,
     borderWidth: 1,
     borderColor: COLORS.link,
     padding: 15,

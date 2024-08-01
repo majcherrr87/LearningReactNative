@@ -1,10 +1,9 @@
 import {
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  View,
   Text,
   FlatList,
+  View,
 } from "react-native";
 import { useNavigation } from "expo-router";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,6 +12,7 @@ import { COLORS } from "../themes/colors";
 import { SearchInput } from "@/components/SearchInput";
 import { useLocationList } from "@/hooks/useLocationList";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SelectLocationByCoordinates } from "@/components/SelectLocationByCoordinates";
 
 export const SelectLocation = () => {
   const { navigate } =
@@ -21,7 +21,14 @@ export const SelectLocation = () => {
   return (
     <FlatList
       ListHeaderComponent={
-        <SearchInput onSearch={(value) => addTOList({ title: value, value })} />
+        <SearchInput
+          onSearch={(value) => addTOList({ title: value, value })}
+          rightElement={
+            <SelectLocationByCoordinates
+              onLocationFound={(item) => addTOList(item)}
+            />
+          }
+        />
       }
       ListHeaderComponentStyle={styles.header}
       contentContainerStyle={styles.container}
