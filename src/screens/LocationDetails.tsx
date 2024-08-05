@@ -8,41 +8,24 @@ import {
 } from "react-native";
 import { COLORS } from "../themes/colors";
 import { FollowingDays } from "../../components/FollowingDays";
-import { useEffect, useState } from "react";
-import { fetchCityData, fetchFollowingDays } from "../services/api";
 import { Footer } from "../../components/Footer";
-import { ApiError, CityData, FollowingDaysType } from "../types/api";
 import { ListContainer } from "@/components/ListContainer";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStockParamList } from "../navigation/Root";
+import { useGetCityDataQuery, useGetFollowingDaysQuery } from "../store/api";
 
 export const LocationDetails = () => {
-  const [current, setCurrent] = useState<null | CityData | ApiError>(null);
-  const [followingDays, setFollowingDays] = useState<
-    null | FollowingDaysType | ApiError
-  >(null);
   const {
     params: { location },
   } = useRoute<RouteProp<RootStockParamList, "LocationDetails">>();
 
-  const init = async () => {
-    const response = await fetchCityData(location);
-    setCurrent(response);
+  const { data: cityData } = useGetCityDataQuery({
+    location,
+  });
 
-    const followingDaysRespons = await fetchFollowingDays(location);
-    setFollowingDays(followingDaysRespons);
-  };
+  const { data: followingDaysData } = useGetFollowingDaysQuery({ location });
 
-  useEffect(() => {
-    init();
-  }, []);
-
-  if (
-    !current ||
-    !followingDays ||
-    "error" in current ||
-    "error" in followingDays
-  ) {
+  if (!cityData || !followingDaysData) {
     return (
       <ActivityIndicator
         color={COLORS.sun}
@@ -55,28 +38,28 @@ export const LocationDetails = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.cityName}>{current.location.name}</Text>
-        <Text style={styles.temperature}>{current.current.temp_c}°</Text>
+        <Text style={styles.cityName}>{cityData.location.name}</Text>
+        <Text style={styles.temperature}>{cityData.current.temp_c}°</Text>
 
         <View style={styles.weatherContainer}>
           <Image
             source={{
-              uri: `https:${current.current.condition.icon}`,
+              uri: `https:${cityData.current.condition.icon}`,
             }}
             resizeMode="contain"
             width={150}
             height={150}
           />
-          <Text style={styles.weather}>{current.current.condition.text}</Text>
+          <Text style={styles.weather}>{cityData.current.condition.text}</Text>
         </View>
 
         <ListContainer>
-          {followingDays.forecast.forecastday.map((day, index, allDays) => (
+          {followingDaysData.forecast.forecastday.map((day, index, allDays) => (
             <FollowingDays
               day={day}
               key={day.date}
               isLast={index === allDays.length - 1}
-              locationName={current.location.name}
+              locationName={cityData.location.name}
             />
           ))}
         </ListContainer>

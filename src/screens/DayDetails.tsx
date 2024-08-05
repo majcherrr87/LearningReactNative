@@ -1,19 +1,8 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { CityData, FollowingDaysType } from "../types/api";
-import { fetchCityData, fetchFollowingDays } from "../services/api";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import React from "react";
 import { COLORS } from "../themes/colors";
 import dayjs from "dayjs";
 import { ListItem } from "@/components/ListItem";
-import { ListContainer } from "@/components/ListContainer";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStockParamList } from "../navigation/Root";
 
