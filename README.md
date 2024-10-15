@@ -1,6 +1,17 @@
 # Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a simple weather application built with React Native. The app allows users to check the current weather for their location or any city they search for. It uses GPS location to fetch weather data automatically or users can manually input the name of a city to retrieve the weather information.
+
+## Features
+- Fetch current weather based on GPS location
+- Search weather by city name
+- Responsive and user-friendly interface
+- Styled with Styled Components
+
+## Technologies Used
+- React Native
+- Styled Components
+- Weather API (https://api.weatherapi.com/v1)
 
 ## Get started
 
@@ -33,18 +44,7 @@ When you're ready, run:
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Authors
 
-## Learn more
+Software engineer Adrian Majcher
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
